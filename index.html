@@ -40,9 +40,39 @@ a{color:inherit}
 .nav-links a{text-decoration:none;font-size:.92rem;font-weight:500;color:var(--ink-soft);padding:6px 2px;border-bottom:2px solid transparent}
 .nav-links a:hover{color:var(--navy)}
 .nav-links a.active{color:var(--navy);border-bottom-color:var(--buzz)}
-.nav-cta{margin-left:8px;background:var(--navy);color:#fff;text-decoration:none;font-weight:600;font-size:.9rem;padding:9px 18px;border-radius:999px}
+.nav-cta{margin-left:8px;background:var(--navy);color:#fff;text-decoration:none;font-weight:600;font-size:.9rem;padding:9px 18px;border-radius:999px;transition:background .15s ease}
 .nav-cta:hover{background:var(--navy-deep)}
-@media(max-width:820px){.nav-links{display:none}.nav-cta{margin-left:auto}}
+.nav-toggle{display:none;margin-left:auto;background:none;border:none;cursor:pointer;padding:8px;flex:none;border-radius:8px}
+.nav-toggle:hover{background:rgba(0,48,87,.06)}
+.nav-toggle svg{width:22px;height:22px;stroke:var(--navy)}
+.nav-toggle .icon-close{display:none}
+.nav-toggle.open .icon-open{display:none}
+.nav-toggle.open .icon-close{display:block}
+@media(max-width:820px){
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:var(--paper);border-bottom:1px solid var(--line);padding:6px 24px 14px;box-shadow:0 16px 32px rgba(0,32,58,.1)}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:13px 2px;border-bottom:1px solid var(--line);width:100%}
+  .nav-links li{width:100%}
+  .nav-links li:last-child a{border-bottom:none}
+  .nav-cta{margin-left:auto}
+  .nav-toggle{display:flex}
+}
+
+/* ---------- Scroll progress ---------- */
+.scroll-progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--buzz));z-index:60;transition:width .08s linear}
+@media(prefers-reduced-motion:reduce){.scroll-progress{transition:none}}
+
+/* ---------- Back to top ---------- */
+.to-top{position:fixed;right:22px;bottom:22px;width:48px;height:48px;border-radius:50%;background:var(--navy);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 26px rgba(0,32,58,.28);opacity:0;transform:translateY(14px) scale(.9);pointer-events:none;transition:opacity .25s ease,transform .25s ease,background .15s ease;z-index:45}
+.to-top.show{opacity:1;transform:none;pointer-events:auto}
+.to-top:hover{background:var(--navy-deep)}
+.to-top svg{width:20px;height:20px;stroke:#fff}
+@media(prefers-reduced-motion:reduce){.to-top{transition:opacity .15s linear}}
+
+/* ---------- Tilt cards ---------- */
+.tilt{transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s ease;will-change:transform;transform-style:preserve-3d}
+.tilt:hover{box-shadow:0 18px 44px rgba(0,32,58,.16)}
+@media(prefers-reduced-motion:reduce){.tilt{transition:none}}
 
 /* ---------- Shared ---------- */
 .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
@@ -70,7 +100,14 @@ a{color:inherit}
 
 /* ---------- Hero ---------- */
 .hero{background:var(--navy);color:#fff;padding:110px 0 120px;position:relative;overflow:hidden}
-.hero-inner{max-width:1120px;margin:0 auto;padding:0 24px;position:relative}
+.hero-inner{max-width:1120px;margin:0 auto;padding:0 24px;position:relative;z-index:2}
+.hero-orbs{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(2px);opacity:.5;animation:float 14s ease-in-out infinite}
+.orb-1{width:220px;height:220px;background:radial-gradient(circle at 30% 30%,rgba(234,170,0,.5),transparent 70%);top:-40px;left:8%}
+.orb-2{width:300px;height:300px;background:radial-gradient(circle at 30% 30%,rgba(179,163,105,.4),transparent 70%);bottom:-80px;left:38%;animation-delay:-4s;animation-duration:18s}
+.orb-3{width:180px;height:180px;background:radial-gradient(circle at 30% 30%,rgba(11,74,122,.7),transparent 70%);top:30%;right:12%;animation-delay:-8s;animation-duration:16s}
+@keyframes float{0%,100%{transform:translate(0,0)}33%{transform:translate(24px,-30px)}66%{transform:translate(-18px,18px)}}
+@media(prefers-reduced-motion:reduce){.orb{animation:none}}
 .hero-eyebrow{font-size:.8rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
 .hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(2.5rem,6vw,4.4rem);line-height:1.06;max-width:16ch}
 .hl{position:relative;white-space:nowrap}
@@ -80,8 +117,6 @@ a{color:inherit}
 .hl-ink{color:var(--navy-deep)}
 .hero-sub{margin-top:26px;font-size:1.18rem;line-height:1.6;color:#C9D6E2;max-width:56ch}
 .hero-ctas{margin-top:38px;display:flex;gap:16px;flex-wrap:wrap}
-.hero-band{position:absolute;right:-60px;top:50%;transform:translateY(-50%);width:420px;opacity:.14;pointer-events:none}
-@media(max-width:900px){.hero-band{display:none}}
 
 /* ---------- Stats ---------- */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:56px}
@@ -101,6 +136,25 @@ a{color:inherit}
 .legend span{display:flex;align-items:center;gap:8px}
 .dot{width:12px;height:12px;border-radius:50%}
 @media(max-width:900px){.compound{grid-template-columns:1fr}}
+
+/* interactive salary slider */
+.salary-control{margin-top:20px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.salary-control label{display:flex;justify-content:space-between;align-items:baseline;font-size:.9rem;font-weight:600;color:var(--ink-soft);gap:12px}
+.salary-control .sc-val{font-family:var(--disp);font-weight:700;font-size:1.4rem;color:var(--navy);font-variant-numeric:tabular-nums}
+.salary-control input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:999px;background:linear-gradient(90deg,var(--gold),var(--buzz));margin-top:14px;cursor:pointer}
+.salary-control input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:26px;height:26px;border-radius:50%;background:var(--navy);border:3px solid #fff;box-shadow:0 2px 8px rgba(0,32,58,.3);cursor:pointer;transition:transform .12s ease}
+.salary-control input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.12)}
+.salary-control input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:var(--navy);border:3px solid #fff;box-shadow:0 2px 8px rgba(0,32,58,.3);cursor:pointer}
+.sc-scale{display:flex;justify-content:space-between;font-size:.72rem;color:#8A94A0;margin-top:8px}
+.gap-readout{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.gap-cell{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.gap-cell .k{font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.gap-cell .v{font-family:var(--disp);font-weight:700;font-size:1.6rem;color:var(--navy);font-variant-numeric:tabular-nums;margin-top:4px;line-height:1}
+.gap-cell.hl-gap{background:var(--navy)}
+.gap-cell.hl-gap .k{color:var(--buzz)}
+.gap-cell.hl-gap .v{color:#fff}
+.chart-line{transition:d .5s ease}
+@media(prefers-reduced-motion:reduce){.chart-line{transition:none}}
 
 /* ---------- Why GT ---------- */
 .report-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:36px 40px;max-width:640px;margin-top:44px;position:relative;box-shadow:0 6px 30px rgba(0,48,87,.06)}
@@ -191,6 +245,51 @@ a{color:inherit}
 .transcript-body{padding:0 24px 22px;color:#C9D6E2;font-size:.95rem}
 .transcript-body p{margin-bottom:12px}
 
+/* ---------- Animated explainer ---------- */
+.explainer{margin-top:52px;border-radius:var(--radius);overflow:hidden;border:1px solid rgba(255,255,255,.14);background:linear-gradient(135deg,var(--navy-deep),var(--navy) 55%,#0B4A7A);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.exp-stage{position:relative;aspect-ratio:16/9;overflow:hidden}
+.exp-scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:5% 8%;opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;pointer-events:none}
+.exp-scene.on{opacity:1;transform:none;pointer-events:auto}
+.exp-kicker{font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--buzz);margin-bottom:18px}
+.exp-big{font-family:var(--disp);font-weight:700;color:#fff;line-height:1;font-size:clamp(3.2rem,10vw,6.5rem);font-variant-numeric:tabular-nums}
+.exp-big .unit{color:var(--buzz);font-size:.5em;margin-left:2px}
+.exp-cap{font-family:var(--disp);font-weight:600;color:#fff;font-size:clamp(1.25rem,3.4vw,2.15rem);line-height:1.22;max-width:22ch;margin:0 auto}
+.exp-sub{margin-top:16px;color:#C9D6E2;font-size:clamp(.9rem,1.7vw,1.08rem);line-height:1.5;max-width:40ch}
+.exp-bars{display:flex;gap:44px;align-items:flex-end;height:46%;margin-bottom:26px}
+.exp-bar{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+.exp-bar-fill{width:clamp(46px,9vw,68px);border-radius:9px 9px 0 0;height:0;transition:height 1s cubic-bezier(.22,1,.36,1)}
+.exp-bar-cap{margin-top:12px;color:#C9D6E2;font-size:.9rem;font-weight:600}
+.b-first{background:#8A94A0}
+.b-neg{background:linear-gradient(180deg,var(--buzz),#F5B921)}
+.b-neg-cap{color:var(--buzz)}
+.exp-scene.on .b-first{height:60%}
+.exp-scene.on .b-neg{height:72%}
+.exp-lines{width:82%;max-width:460px;height:auto;margin:0 auto 22px}
+.exp-lines .ln{fill:none;stroke-width:3.5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.5s ease}
+.exp-lines .ln-took{stroke:#8A94A0}
+.exp-lines .ln-neg{stroke:var(--buzz);stroke-width:4.5}
+.exp-lines .dot-end{opacity:0;transition:opacity .4s ease .9s}
+.exp-scene.on .ln{stroke-dashoffset:0}
+.exp-scene.on .dot-end{opacity:1}
+.exp-mark{width:clamp(56px,10vw,74px);height:auto;margin:0 auto 22px}
+.exp-scene.on .exp-mark{animation:markpop .6s ease both}
+@keyframes markpop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+.exp-cta{margin-top:24px}
+.exp-controls{display:flex;align-items:center;gap:14px;padding:14px 20px;background:rgba(0,0,0,.28);border-top:1px solid rgba(255,255,255,.1)}
+.exp-play{width:42px;height:42px;border-radius:50%;background:var(--buzz);border:none;cursor:pointer;flex:none;display:flex;align-items:center;justify-content:center;transition:transform .15s ease}
+.exp-play:hover{transform:scale(1.08)}
+.exp-play svg{width:18px;height:18px;fill:var(--navy-deep)}
+.exp-dots{display:flex;gap:8px;margin-left:2px}
+.exp-dot{width:clamp(24px,5vw,38px);height:6px;border-radius:999px;background:rgba(255,255,255,.22);border:none;cursor:pointer;padding:0;position:relative;overflow:hidden;transition:background .2s ease}
+.exp-dot:hover{background:rgba(255,255,255,.4)}
+.exp-dot .fill{position:absolute;inset:0;width:0;background:var(--buzz);border-radius:999px}
+.exp-dot.done{background:rgba(234,170,0,.5)}
+.exp-label{margin-left:auto;font-size:.84rem;color:#C9D6E2;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+@media(prefers-reduced-motion:reduce){
+  .exp-scene{transition:opacity .2s linear;transform:none}
+  .exp-bar-fill,.exp-lines .ln,.exp-scene.on .exp-mark,.exp-lines .dot-end{transition:none;animation:none}
+}
+
 /* ---------- Take action ---------- */
 .act-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;margin-top:52px;align-items:start}
 .act-list{list-style:none;display:grid;gap:18px}
@@ -248,7 +347,11 @@ a{color:inherit}
       <svg class="brand-mark" viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect x="1" y="14" width="6" height="11" rx="1.5" fill="#B3A369"/><rect x="10" y="8" width="6" height="17" rx="1.5" fill="#003057"/><rect x="19" y="1" width="6" height="24" rx="1.5" fill="#EAAA00"/></svg>
       Fair Start
     </a>
-    <ul class="nav-links" role="list">
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <ul class="nav-links" id="navLinks" role="list">
       <li><a href="#problem">The Problem</a></li>
       <li><a href="#why-gt">Why GT</a></li>
       <li><a href="#solution">The Fix</a></li>
@@ -259,17 +362,17 @@ a{color:inherit}
     <a class="nav-cta" href="#act">Support</a>
   </div>
 </header>
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
 <main id="top">
 
 <!-- ================= HERO ================= -->
 <section class="hero" aria-label="Introduction">
-  <svg class="hero-band" viewBox="0 0 420 300" fill="none" aria-hidden="true">
-    <rect x="20" y="200" width="70" height="80" rx="8" fill="#FFFFFF"/>
-    <rect x="120" y="140" width="70" height="140" rx="8" fill="#FFFFFF"/>
-    <rect x="220" y="80" width="70" height="200" rx="8" fill="#FFFFFF"/>
-    <rect x="320" y="20" width="70" height="260" rx="8" fill="#EAAA00"/>
-  </svg>
+  <div class="hero-orbs" aria-hidden="true">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <span class="orb orb-3"></span>
+  </div>
   <div class="hero-inner">
     <p class="hero-eyebrow">A student proposal to the Georgia Tech Career Center</p>
     <h1>Your first salary <span class="hl"><span class="hl-ink">follows you</span></span> for the next forty years.</h1>
@@ -308,27 +411,47 @@ a{color:inherit}
 
     <div class="compound reveal">
       <div class="compound-chart">
-        <svg viewBox="0 0 520 260" role="img" aria-label="Line chart showing two salary paths over a 40-year career. A graduate who negotiated an 18.8 percent higher starting salary ends far above one who accepted the first offer, because every future raise builds on the starting number.">
+        <svg id="salaryChart" viewBox="0 0 520 260" role="img" aria-label="Interactive line chart comparing two 40-year salary paths. Drag the starting-salary slider to see how negotiating 18.8 percent more at graduation compounds into a large lifetime gap.">
           <line x1="46" y1="220" x2="500" y2="220" stroke="#E4DED2" stroke-width="1.5"/>
           <line x1="46" y1="20" x2="46" y2="220" stroke="#E4DED2" stroke-width="1.5"/>
           <text x="48" y="244" font-size="11" fill="#8A94A0" font-family="Instrument Sans">Year 1</text>
           <text x="440" y="244" font-size="11" fill="#8A94A0" font-family="Instrument Sans">Year 40</text>
-          <text x="14" y="216" font-size="11" fill="#8A94A0" font-family="Instrument Sans">$70k</text>
-          <path d="M46 208 C 180 190, 330 150, 500 96" fill="none" stroke="#8A94A0" stroke-width="3" stroke-linecap="round"/>
-          <path d="M46 196 C 180 168, 330 110, 500 34" fill="none" stroke="#EAAA00" stroke-width="4" stroke-linecap="round"/>
-          <circle cx="500" cy="96" r="5" fill="#8A94A0"/>
-          <circle cx="500" cy="34" r="6" fill="#EAAA00" stroke="#003057" stroke-width="2"/>
+          <text id="axisTop" x="8" y="26" font-size="11" fill="#8A94A0" font-family="Instrument Sans">$0</text>
+          <path id="pathTook" class="chart-line" d="" fill="none" stroke="#8A94A0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path id="pathNeg" class="chart-line" d="" fill="none" stroke="#EAAA00" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle id="dotTook" cx="500" cy="120" r="5" fill="#8A94A0"/>
+          <circle id="dotNeg" cx="500" cy="60" r="6" fill="#EAAA00" stroke="#003057" stroke-width="2"/>
         </svg>
         <div class="legend">
-          <span><span class="dot" style="background:#EAAA00"></span> Negotiated the first offer</span>
+          <span><span class="dot" style="background:#EAAA00"></span> Negotiated (+18.8%)</span>
           <span><span class="dot" style="background:#8A94A0"></span> Took the first offer</span>
         </div>
-        <p class="compound-note">Illustrative projection. Both graduates receive the same percentage raises — only the starting number differs.</p>
+
+        <div class="salary-control">
+          <label for="startSalary">
+            Your starting salary
+            <span class="sc-val" id="startVal">$70,000</span>
+          </label>
+          <input type="range" id="startSalary" min="45000" max="130000" step="1000" value="70000"
+                 aria-describedby="startVal">
+          <div class="sc-scale"><span>$45k</span><span>$130k</span></div>
+          <div class="gap-readout">
+            <div class="gap-cell">
+              <p class="k">Extra at year 1</p>
+              <p class="v" id="gapYear1">$0</p>
+            </div>
+            <div class="gap-cell hl-gap">
+              <p class="k">Lifetime gap (40 yr)</p>
+              <p class="v" id="gapLifetime">$0</p>
+            </div>
+          </div>
+        </div>
+        <p class="compound-note">Illustrative projection assuming a 4% annual raise on both paths. Only the starting number differs — negotiating adds 18.8%.</p>
       </div>
       <div>
         <h3 style="font-family:var(--disp);font-weight:600;font-size:1.5rem;color:var(--navy);max-width:18ch">A gap at 22 doesn't stay small.</h3>
         <p style="margin-top:14px;color:var(--ink-soft)">Raises, bonuses, and your next job's offer are almost always calculated as a percentage of what you make now. Accept a few thousand under market at graduation, and you don't lose it once — you lose it every year, compounding, for an entire career.</p>
-        <p style="margin-top:14px;color:var(--ink-soft)">One conversation at the start changes the whole curve. We just need the data to have it.</p>
+        <p style="margin-top:14px;color:var(--ink-soft)">One conversation at the start changes the whole curve. <strong>Drag the slider</strong> — the gap is real money, and it's yours to keep.</p>
       </div>
     </div>
   </div>
@@ -396,7 +519,7 @@ a{color:inherit}
     <p class="lede reveal">The Fair Start Initiative asks the Career Center to build one resource with two connected parts — real data, and the skills to use it.</p>
 
     <div class="sol-grid reveal">
-      <div class="sol-card">
+      <div class="sol-card tilt">
         <p class="sol-num">PART 01</p>
         <h3>Verified pay bands</h3>
         <p>Role-specific, location-adjusted salary ranges for the most common Georgia Tech graduate destinations — built from sources that can actually be trusted:</p>
@@ -406,7 +529,7 @@ a{color:inherit}
           <li><strong>Zero</strong> crowdsourced, self-reported guesswork</li>
         </ul>
       </div>
-      <div class="sol-card">
+      <div class="sol-card tilt">
         <p class="sol-num">PART 02</p>
         <h3>A negotiation playbook</h3>
         <p>A short, plain-language guide that turns the data into a conversation you can actually have:</p>
@@ -514,39 +637,61 @@ a{color:inherit}
 <!-- ================= VIDEO ================= -->
 <section class="section band-navy on-navy" id="video" aria-labelledby="video-h">
   <div class="wrap">
-    <p class="eyebrow reveal">Hear It From Us</p>
-    <h2 class="h2 reveal" id="video-h">90 seconds on why this matters.</h2>
-    <p class="lede reveal">Four Georgia Tech students. One very fixable problem.</p>
+    <p class="eyebrow reveal">The Story In Motion</p>
+    <h2 class="h2 reveal" id="video-h">The whole argument in 20 seconds.</h2>
+    <p class="lede reveal">One very fixable problem — and exactly what it's worth to fix it. Press play, or tap a chapter.</p>
 
-    <!-- ============================================================
-         TEAM: PASTE YOUR YOUTUBE EMBED HERE.
-         Replace the entire <div class="video-card"> below with:
-         <div style="position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden">
-           <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-             title="The Fair Start Initiative — team video"
-             style="position:absolute;inset:0;width:100%;height:100%;border:0"
-             allow="accelerometer; encrypted-media; picture-in-picture"
-             allowfullscreen></iframe>
-         </div>
-         ============================================================ -->
-    <div class="video-card reveal" role="img" aria-label="Video placeholder: The Fair Start Initiative team video, about 90 seconds">
-      <button class="play" aria-label="Play team video (video coming soon)">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-      </button>
-      <p class="video-title">The Fair Start Initiative — Team Video</p>
-      <span class="video-len">1:30</span>
-    </div>
+    <div class="explainer reveal" id="explainer">
+      <div class="exp-stage" id="expStage" aria-label="Animated explainer: why first-offer negotiation matters">
 
-    <details class="transcript reveal">
-      <summary><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>Read the transcript</summary>
-      <div class="transcript-body">
-        <p><strong>Jeb:</strong> Quick question — when you got your last offer, internship or full-time, how did you know if the number was good? Most of us... didn't. We guessed.</p>
-        <p><strong>Audrey:</strong> And the data backs that up. Fifty-five percent of workers don't negotiate at all, and the number one reason is confidence. It hits people our age the hardest.</p>
-        <p><strong>Aidan:</strong> Here's the part that stings: candidates who do negotiate average almost nineteen percent more than their first offer. That gap doesn't disappear — every raise you ever get is built on your starting number.</p>
-        <p><strong>Stephen:</strong> Georgia Tech publishes salary data, but it's self-reported — students remembering, rounding, guessing. Schools like Michigan and Cornell already give their students verified tools. We can too.</p>
-        <p><strong>Jeb:</strong> The Fair Start Initiative is a $6,800 pilot: verified pay bands plus a plain-language negotiation guide, run by the Career Center in a single semester. One conversation at the start of your career changes the whole curve. Help us make sure every Jacket gets a fair start.</p>
+        <div class="exp-scene on" data-dur="2800" data-title="The setup">
+          <p class="exp-kicker">Your first salary</p>
+          <p class="exp-cap">Most of us take the first number we're given.</p>
+          <p class="exp-sub">No verified data, no playbook — just an offer and a deadline.</p>
+        </div>
+
+        <div class="exp-scene" data-dur="3400" data-title="The problem">
+          <p class="exp-kicker">The problem</p>
+          <p class="exp-big"><span data-count="55">0</span><span class="unit">%</span></p>
+          <p class="exp-sub">of workers don't negotiate their pay at all. The number one reason is confidence — and it hits people our age hardest.</p>
+        </div>
+
+        <div class="exp-scene" data-dur="3600" data-title="The upside">
+          <p class="exp-kicker">When you do negotiate</p>
+          <div class="exp-bars" aria-hidden="true">
+            <div class="exp-bar"><span class="exp-bar-fill b-first"></span><span class="exp-bar-cap">First offer</span></div>
+            <div class="exp-bar"><span class="exp-bar-fill b-neg"></span><span class="exp-bar-cap b-neg-cap">+18.8%</span></div>
+          </div>
+          <p class="exp-cap">Negotiators average 18.8% more than their first offer.</p>
+        </div>
+
+        <div class="exp-scene" data-dur="3800" data-title="It compounds">
+          <p class="exp-kicker">And it compounds</p>
+          <svg class="exp-lines" viewBox="0 0 420 150" aria-hidden="true">
+            <line x1="12" y1="132" x2="408" y2="132" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+            <path class="ln ln-took" pathLength="1" fill="none" d="M12 122 C 150 110, 300 92, 408 70"/>
+            <path class="ln ln-neg" pathLength="1" fill="none" d="M12 112 C 150 90, 300 54, 408 20"/>
+            <circle class="dot-end" cx="408" cy="70" r="5" fill="#8A94A0"/>
+            <circle class="dot-end" cx="408" cy="20" r="6" fill="#EAAA00" stroke="#00203A" stroke-width="2"/>
+          </svg>
+          <p class="exp-cap">One conversation at 22 changes the whole curve — for 40 years.</p>
+        </div>
+
+        <div class="exp-scene" data-dur="4600" data-title="The fix">
+          <svg class="exp-mark" viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect x="1" y="14" width="6" height="11" rx="1.5" fill="#B3A369"/><rect x="10" y="8" width="6" height="17" rx="1.5" fill="#5C7FA3"/><rect x="19" y="1" width="6" height="24" rx="1.5" fill="#EAAA00"/></svg>
+          <p class="exp-cap">Fair Start gives every graduate verified pay data and a negotiation playbook — before they sign.</p>
+          <a class="btn btn-gold exp-cta" href="#act">Support the Initiative</a>
+        </div>
+
       </div>
-    </details>
+      <div class="exp-controls">
+        <button class="exp-play" id="expPlay" aria-label="Play explainer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="exp-dots" id="expDots" role="tablist" aria-label="Explainer chapters"></div>
+        <span class="exp-label" id="expLabel">Chapter 1 / 5</span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -650,13 +795,17 @@ a{color:inherit}
 
 </main>
 
+<button class="to-top" id="toTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
 <!-- ================= FOOTER ================= -->
 <footer class="footer" aria-label="Site footer">
   <div class="wrap">
     <div class="foot-grid">
       <div>
         <p class="foot-brand">The Fair Start Initiative</p>
-        <p class="foot-team">Jeb McDonald · Audrey Nguyen · Aidan Charles · Stephen Shaffner</p>
+        <p class="foot-team">A student team project · Georgia Institute of Technology</p>
         <p class="foot-course">Created for LMC 3403: Technical Communication, Georgia Institute of Technology. A student project proposal addressed to the Georgia Tech Career Center; not an official Georgia Tech program.</p>
       </div>
       <div class="foot">
@@ -802,6 +951,236 @@ a{color:inherit}
     });
   });
 
+  /* ---------- Mobile nav ---------- */
+  var navToggle = document.getElementById("navToggle");
+  var navLinks = document.getElementById("navLinks");
+  if(navToggle && navLinks){
+    function closeNav(){
+      navLinks.classList.remove("open");
+      navToggle.classList.remove("open");
+      navToggle.setAttribute("aria-expanded","false");
+      navToggle.setAttribute("aria-label","Open menu");
+    }
+    navToggle.addEventListener("click", function(){
+      var open = navLinks.classList.toggle("open");
+      navToggle.classList.toggle("open", open);
+      navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    });
+    navLinks.addEventListener("click", function(e){ if(e.target.closest("a")) closeNav(); });
+    document.addEventListener("keydown", function(e){ if(e.key === "Escape") closeNav(); });
+  }
+
+  /* ---------- Scroll progress + back-to-top ---------- */
+  var progress = document.getElementById("scrollProgress");
+  var toTop = document.getElementById("toTop");
+  function onScroll(){
+    var st = window.pageYOffset || document.documentElement.scrollTop;
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = h > 0 ? (st / h) * 100 : 0;
+    if(progress) progress.style.width = pct + "%";
+    if(toTop) toTop.classList.toggle("show", st > 600);
+  }
+  window.addEventListener("scroll", onScroll, {passive:true});
+  onScroll();
+  if(toTop){
+    toTop.addEventListener("click", function(){
+      window.scrollTo({top:0, behavior: reduced ? "auto" : "smooth"});
+    });
+  }
+
+  /* ---------- Interactive salary chart ---------- */
+  var slider = document.getElementById("startSalary");
+  if(slider){
+    var RAISE = 0.04, BUMP = 0.188, YEARS = 40;
+    var X0 = 46, X1 = 500, Y0 = 220, Y1 = 30; // svg plot bounds
+    var startVal = document.getElementById("startVal");
+    var gap1El = document.getElementById("gapYear1");
+    var gapLifeEl = document.getElementById("gapLifetime");
+    var axisTop = document.getElementById("axisTop");
+    var pathTook = document.getElementById("pathTook");
+    var pathNeg = document.getElementById("pathNeg");
+    var dotTook = document.getElementById("dotTook");
+    var dotNeg = document.getElementById("dotNeg");
+    function money(n){
+      if(n >= 1e6) return "$" + (n/1e6).toFixed(n >= 1e7 ? 0 : 1) + "M";
+      if(n >= 1e3) return "$" + Math.round(n/1e3) + "k";
+      return "$" + Math.round(n);
+    }
+    function moneyFull(n){ return "$" + Math.round(n).toLocaleString("en-US"); }
+    function pathFor(start, top){
+      var d = "", cumMax = top;
+      for(var y = 0; y < YEARS; y++){
+        var v = start * Math.pow(1 + RAISE, y);
+        var x = X0 + (X1 - X0) * (y / (YEARS - 1));
+        var yy = Y0 - (Y0 - Y1) * (v / cumMax);
+        d += (y === 0 ? "M" : "L") + x.toFixed(1) + " " + yy.toFixed(1);
+      }
+      return d;
+    }
+    function update(){
+      var base = parseInt(slider.value, 10);
+      var neg = base * (1 + BUMP);
+      // lifetime totals
+      var totalBase = 0, totalNeg = 0;
+      for(var y = 0; y < YEARS; y++){
+        var f = Math.pow(1 + RAISE, y);
+        totalBase += base * f;
+        totalNeg += neg * f;
+      }
+      var topVal = neg * Math.pow(1 + RAISE, YEARS - 1);
+      startVal.textContent = moneyFull(base);
+      gap1El.textContent = money(neg - base);
+      gapLifeEl.textContent = money(totalNeg - totalBase);
+      axisTop.textContent = money(topVal);
+      pathTook.setAttribute("d", pathFor(base, topVal));
+      pathNeg.setAttribute("d", pathFor(neg, topVal));
+      var endBase = Y0 - (Y0 - Y1) * (base * Math.pow(1+RAISE, YEARS-1) / topVal);
+      var endNeg = Y0 - (Y0 - Y1) * (neg * Math.pow(1+RAISE, YEARS-1) / topVal);
+      dotTook.setAttribute("cy", endBase.toFixed(1));
+      dotNeg.setAttribute("cy", endNeg.toFixed(1));
+    }
+    slider.addEventListener("input", update);
+    update();
+  }
+
+  /* ---------- Pointer tilt on cards ---------- */
+  if(!reduced && window.matchMedia("(pointer:fine)").matches){
+    document.querySelectorAll(".tilt").forEach(function(card){
+      card.addEventListener("pointermove", function(e){
+        var r = card.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = "perspective(800px) rotateX(" + (-py*4).toFixed(2) + "deg) rotateY(" + (px*4).toFixed(2) + "deg) translateY(-4px)";
+      });
+      card.addEventListener("pointerleave", function(){ card.style.transform = ""; });
+    });
+  }
+
+  /* ---------- Confetti ---------- */
+  function confettiBurst(){
+    if(reduced) return;
+    var colors = ["#EAAA00","#B3A369","#003057","#0B4A7A","#fff"];
+    var N = 90;
+    var frag = document.createDocumentFragment();
+    var pieces = [];
+    for(var i = 0; i < N; i++){
+      var el = document.createElement("span");
+      var size = 6 + Math.random()*7;
+      el.style.cssText = "position:fixed;top:-14px;left:" + (Math.random()*100) + "vw;width:" + size + "px;height:" + (size*0.5) + "px;background:" + colors[i%colors.length] + ";z-index:70;pointer-events:none;border-radius:2px;will-change:transform,opacity";
+      frag.appendChild(el);
+      pieces.push({el:el, x:0, y:0, vx:(Math.random()-0.5)*6, vy:2+Math.random()*4, rot:Math.random()*360, vr:(Math.random()-0.5)*20});
+    }
+    document.body.appendChild(frag);
+    var start = null, DUR = 2600;
+    function frame(t){
+      if(!start) start = t;
+      var el2 = t - start;
+      pieces.forEach(function(p){
+        p.vy += 0.14; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+        p.el.style.transform = "translate(" + p.x + "px," + p.y + "px) rotate(" + p.rot + "deg)";
+        p.el.style.opacity = String(Math.max(0, 1 - el2/DUR));
+      });
+      if(el2 < DUR) requestAnimationFrame(frame);
+      else pieces.forEach(function(p){ p.el.remove(); });
+    }
+    requestAnimationFrame(frame);
+  }
+
+  /* ---------- Animated explainer ---------- */
+  var exp = document.getElementById("explainer");
+  if(exp){
+    var scenes = Array.prototype.slice.call(exp.querySelectorAll(".exp-scene"));
+    var playBtn = document.getElementById("expPlay");
+    var dotsWrap = document.getElementById("expDots");
+    var labelEl = document.getElementById("expLabel");
+    var PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+    var PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>';
+    var idx = 0, playing = false, raf = null, tStart = 0, elapsed = 0, curDur = 0, started = false;
+
+    var dots = scenes.map(function(s, i){
+      var b = document.createElement("button");
+      b.className = "exp-dot";
+      b.setAttribute("role", "tab");
+      b.setAttribute("aria-label", "Chapter " + (i+1) + ": " + (s.getAttribute("data-title") || ""));
+      b.innerHTML = '<span class="fill"></span>';
+      b.addEventListener("click", function(){ goTo(i); });
+      dotsWrap.appendChild(b);
+      return b;
+    });
+    function fillOf(i){ return dots[i].firstChild; }
+    function setFill(i, pct){ fillOf(i).style.width = pct + "%"; }
+
+    function countUp(el){
+      var target = parseFloat(el.getAttribute("data-count"));
+      if(reduced){ el.textContent = target; return; }
+      var t0 = null, d = 1100;
+      (function tk(t){
+        if(!t0) t0 = t;
+        var p = Math.min((t - t0)/d, 1);
+        el.textContent = Math.round(target * (1 - Math.pow(1-p, 3)));
+        if(p < 1) requestAnimationFrame(tk);
+      })(performance.now());
+    }
+
+    function activate(i){
+      idx = i;
+      scenes.forEach(function(s, j){ s.classList.toggle("on", j === i); });
+      dots.forEach(function(d, j){
+        d.classList.toggle("done", j < i);
+        setFill(j, j < i ? 100 : 0);
+      });
+      labelEl.textContent = "Chapter " + (i+1) + " / " + scenes.length;
+      curDur = parseInt(scenes[i].getAttribute("data-dur"), 10) || 3200;
+      var c = scenes[i].querySelector("[data-count]");
+      if(c) countUp(c);
+    }
+
+    function tick(t){
+      if(!playing) return;
+      if(!tStart) tStart = t - elapsed;
+      elapsed = t - tStart;
+      setFill(idx, Math.min(elapsed / curDur * 100, 100));
+      if(elapsed >= curDur){
+        elapsed = 0; tStart = 0;
+        activate((idx + 1) % scenes.length);
+      }
+      raf = requestAnimationFrame(tick);
+    }
+    function play(){
+      if(playing) return;
+      playing = true; started = true;
+      playBtn.innerHTML = PAUSE;
+      playBtn.setAttribute("aria-label", "Pause explainer");
+      tStart = 0;
+      raf = requestAnimationFrame(tick);
+    }
+    function pause(){
+      playing = false;
+      playBtn.innerHTML = PLAY;
+      playBtn.setAttribute("aria-label", "Play explainer");
+      if(raf) cancelAnimationFrame(raf);
+      tStart = 0;
+    }
+    function goTo(i){
+      elapsed = 0; tStart = 0;
+      activate(i);
+      if(!playing){ setFill(i, 0); }
+    }
+    playBtn.addEventListener("click", function(){ playing ? pause() : play(); });
+
+    activate(0);
+    if("IntersectionObserver" in window && !reduced){
+      var eio = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){ if(!playing) play(); }
+          else { if(playing) pause(); }
+        });
+      }, {threshold: .45});
+      eio.observe(exp);
+    }
+  }
+
   /* ---------- Form validation ---------- */
   var form = document.getElementById("supportForm");
   if(form){
@@ -822,6 +1201,7 @@ a{color:inherit}
         var ok = document.getElementById("form-ok");
         ok.style.display = "block";
         ok.focus && ok.focus();
+        confettiBurst();
       }
     });
   }
