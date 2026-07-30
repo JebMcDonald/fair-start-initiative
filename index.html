@@ -14,6 +14,8 @@
   --navy-deep:#00203A;
   --gold:#B3A369;
   --buzz:#EAAA00;
+  --pos:#12855A;
+  --pos-light:#54D99A;
   --paper:#FAF8F4;
   --white:#FFFFFF;
   --ink:#1B2733;
@@ -111,12 +113,22 @@ a{color:inherit}
 .hero-eyebrow{font-size:.8rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
 .hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(2.5rem,6vw,4.4rem);line-height:1.06;max-width:16ch}
 .hl{position:relative;white-space:nowrap}
-.hl::after{content:"";position:absolute;left:-2%;right:-2%;bottom:.08em;height:.34em;background:var(--buzz);opacity:.9;z-index:-1;transform:scaleX(0);transform-origin:left;animation:sweep .7s .45s ease forwards}
+.hl::after{content:"";position:absolute;left:-2%;right:-2%;bottom:.02em;height:.16em;background:rgba(255,255,255,.28);opacity:1;z-index:-1;transform:scaleX(0);transform-origin:left;animation:sweep .7s .45s ease forwards}
 @keyframes sweep{to{transform:scaleX(1)}}
 @media(prefers-reduced-motion:reduce){.hl::after{animation:none;transform:scaleX(1)}}
-.hl-ink{color:var(--navy-deep)}
+.hl-ink{color:var(--buzz)}
 .hero-sub{margin-top:26px;font-size:1.18rem;line-height:1.6;color:#C9D6E2;max-width:56ch}
 .hero-ctas{margin-top:38px;display:flex;gap:16px;flex-wrap:wrap}
+
+/* ---------- Conversational opener ---------- */
+.ask{max-width:60ch;margin-bottom:48px}
+.ask-q{font-family:var(--disp);font-weight:600;font-size:clamp(1.35rem,3vw,2.05rem);line-height:1.28;color:var(--navy);padding:2px 0 2px 20px;border-left:3px solid var(--buzz);margin-bottom:14px;opacity:0;transform:translateX(-12px);transition:opacity .5s ease,transform .5s ease}
+.ask-q:last-child{color:var(--pos);border-left-color:var(--pos)}
+.ask.in .ask-q{opacity:1;transform:none}
+.ask.in .ask-q:nth-child(1){transition-delay:.05s}
+.ask.in .ask-q:nth-child(2){transition-delay:.25s}
+.ask.in .ask-q:nth-child(3){transition-delay:.45s}
+@media(prefers-reduced-motion:reduce){.ask-q{opacity:1;transform:none;transition:none}}
 
 /* ---------- Stats ---------- */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:56px}
@@ -124,6 +136,7 @@ a{color:inherit}
 .stat:first-child{border-left:none}
 .stat-num{font-family:var(--disp);font-weight:700;font-size:clamp(2.6rem,5vw,3.8rem);color:var(--navy);font-variant-numeric:tabular-nums;line-height:1}
 .stat-num .unit{font-size:.5em;color:var(--gold);margin-left:2px}
+.stat-num.stat-pos,.stat-num.stat-pos .unit{color:var(--pos)}
 .stat-label{margin-top:10px;font-size:.98rem;color:var(--ink-soft);max-width:26ch}
 .stat-src{margin-top:10px;font-size:.78rem;color:#8A94A0}
 @media(max-width:760px){.stats{grid-template-columns:1fr}.stat{border-left:none;border-top:1px solid var(--line)}.stat:first-child{border-top:none}}
@@ -151,8 +164,8 @@ a{color:inherit}
 .gap-cell .k{font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
 .gap-cell .v{font-family:var(--disp);font-weight:700;font-size:1.6rem;color:var(--navy);font-variant-numeric:tabular-nums;margin-top:4px;line-height:1}
 .gap-cell.hl-gap{background:var(--navy)}
-.gap-cell.hl-gap .k{color:var(--buzz)}
-.gap-cell.hl-gap .v{color:#fff}
+.gap-cell.hl-gap .k{color:var(--pos-light)}
+.gap-cell.hl-gap .v{color:var(--pos-light)}
 .chart-line{transition:d .5s ease}
 @media(prefers-reduced-motion:reduce){.chart-line{transition:none}}
 
@@ -165,9 +178,12 @@ a{color:inherit}
 /* ---------- Peer schools ---------- */
 .band-navy{background:var(--navy);color:#fff}
 .peer-grid{margin-top:52px;display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
-.peer{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:var(--radius);padding:26px 20px;text-align:center}
+.peer{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:var(--radius);padding:26px 20px;text-align:center;display:block;text-decoration:none;transition:transform .2s ease,border-color .2s ease,background .2s ease}
+a.peer:hover{transform:translateY(-4px);border-color:var(--buzz);background:rgba(255,255,255,.09)}
 .peer h3{font-size:1rem;font-weight:600;color:#fff}
 .peer p{font-size:.82rem;color:#B7C6D4;margin-top:8px;min-height:3.2em}
+.peer-link{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:.78rem;font-weight:700;color:var(--buzz)}
+.peer-link svg{width:13px;height:13px;stroke:var(--buzz)}
 .peer-check{width:34px;height:34px;margin:0 auto 14px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--buzz)}
 .peer-check svg{width:18px;height:18px;stroke:var(--navy-deep)}
 .peer-gt{background:rgba(234,170,0,.1);border:1px dashed var(--buzz)}
@@ -260,14 +276,14 @@ a{color:inherit}
 .exp-bar-fill{width:clamp(46px,9vw,68px);border-radius:9px 9px 0 0;height:0;transition:height 1s cubic-bezier(.22,1,.36,1)}
 .exp-bar-cap{margin-top:12px;color:#C9D6E2;font-size:.9rem;font-weight:600}
 .b-first{background:#8A94A0}
-.b-neg{background:linear-gradient(180deg,var(--buzz),#F5B921)}
-.b-neg-cap{color:var(--buzz)}
+.b-neg{background:linear-gradient(180deg,var(--pos-light),#22A870)}
+.b-neg-cap{color:var(--pos-light)}
 .exp-scene.on .b-first{height:60%}
 .exp-scene.on .b-neg{height:72%}
 .exp-lines{width:82%;max-width:460px;height:auto;margin:0 auto 22px}
 .exp-lines .ln{fill:none;stroke-width:3.5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.5s ease}
 .exp-lines .ln-took{stroke:#8A94A0}
-.exp-lines .ln-neg{stroke:var(--buzz);stroke-width:4.5}
+.exp-lines .ln-neg{stroke:var(--pos-light);stroke-width:4.5}
 .exp-lines .dot-end{opacity:0;transition:opacity .4s ease .9s}
 .exp-scene.on .ln{stroke-dashoffset:0}
 .exp-scene.on .dot-end{opacity:1}
@@ -356,7 +372,7 @@ a{color:inherit}
       <li><a href="#why-gt">Why GT</a></li>
       <li><a href="#solution">The Fix</a></li>
       <li><a href="#plan">The Plan</a></li>
-      <li><a href="#video">Video</a></li>
+      <li><a href="#video">The Story</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
     <a class="nav-cta" href="#act">Support</a>
@@ -387,6 +403,11 @@ a{color:inherit}
 <!-- ================= PROBLEM ================= -->
 <section class="section" id="problem" aria-labelledby="problem-h">
   <div class="wrap">
+    <div class="ask reveal">
+      <p class="ask-q">Have you ever negotiated a salary?</p>
+      <p class="ask-q">Did Georgia Tech teach you how?</p>
+      <p class="ask-q">If not — why not?</p>
+    </div>
     <p class="eyebrow reveal">The Problem</p>
     <h2 class="h2 reveal" id="problem-h">Most of us take the first number we're given.</h2>
     <p class="lede reveal">Not because the offer is fair — because negotiating feels risky and nobody handed us the data. The numbers say we're leaving real money on the table.</p>
@@ -403,7 +424,7 @@ a{color:inherit}
         <p class="stat-src">Pew Research Center, 2023, as cited in Aurora University, 2025</p>
       </div>
       <div class="stat" role="listitem">
-        <p class="stat-num">+<span class="count" data-target="18.8" data-decimals="1">0</span><span class="unit">%</span></p>
+        <p class="stat-num stat-pos">+<span class="count" data-target="18.8" data-decimals="1">0</span><span class="unit">%</span></p>
         <p class="stat-label">average increase over the initial offer when candidates do negotiate. Confidence pays.</p>
         <p class="stat-src">Aurora University, 2025</p>
       </div>
@@ -418,12 +439,12 @@ a{color:inherit}
           <text x="440" y="244" font-size="11" fill="#8A94A0" font-family="Instrument Sans">Year 40</text>
           <text id="axisTop" x="8" y="26" font-size="11" fill="#8A94A0" font-family="Instrument Sans">$0</text>
           <path id="pathTook" class="chart-line" d="" fill="none" stroke="#8A94A0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          <path id="pathNeg" class="chart-line" d="" fill="none" stroke="#EAAA00" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path id="pathNeg" class="chart-line" d="" fill="none" stroke="#12855A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
           <circle id="dotTook" cx="500" cy="120" r="5" fill="#8A94A0"/>
-          <circle id="dotNeg" cx="500" cy="60" r="6" fill="#EAAA00" stroke="#003057" stroke-width="2"/>
+          <circle id="dotNeg" cx="500" cy="60" r="6" fill="#12855A" stroke="#003057" stroke-width="2"/>
         </svg>
         <div class="legend">
-          <span><span class="dot" style="background:#EAAA00"></span> Negotiated (+18.8%)</span>
+          <span><span class="dot" style="background:#12855A"></span> Negotiated (+18.8%)</span>
           <span><span class="dot" style="background:#8A94A0"></span> Took the first offer</span>
         </div>
 
@@ -482,26 +503,30 @@ a{color:inherit}
     <p class="lede reveal">This isn't an experiment. Universities across the country already give their students salary tools and negotiation frameworks. Georgia Tech has everything it needs to catch up fast — and do it better.</p>
 
     <div class="peer-grid reveal" role="list">
-      <div class="peer" role="listitem">
+      <a class="peer" role="listitem" href="https://careercenter.umich.edu/" target="_blank" rel="noopener noreferrer">
         <div class="peer-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>
         <h3>Michigan</h3>
         <p>Dedicated "Salary Negotiation Advisor" plus filterable wage tools</p>
-      </div>
-      <div class="peer" role="listitem">
+        <span class="peer-link">Visit program <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+      </a>
+      <a class="peer" role="listitem" href="https://career.cornell.edu/" target="_blank" rel="noopener noreferrer">
         <div class="peer-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>
         <h3>Cornell</h3>
         <p>Structured negotiation instruction for first-time job seekers</p>
-      </div>
-      <div class="peer" role="listitem">
+        <span class="peer-link">Visit program <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+      </a>
+      <a class="peer" role="listitem" href="https://careers.usc.edu/" target="_blank" rel="noopener noreferrer">
         <div class="peer-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>
         <h3>USC</h3>
         <p>Formal salary negotiation framework through its Career Center</p>
-      </div>
-      <div class="peer" role="listitem">
+        <span class="peer-link">Visit program <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+      </a>
+      <a class="peer" role="listitem" href="https://www.k-state.edu/careercenter/" target="_blank" rel="noopener noreferrer">
         <div class="peer-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>
         <h3>Kansas State</h3>
         <p>"Target number vs. dream number" model for planning a counteroffer</p>
-      </div>
+        <span class="peer-link">Visit program <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+      </a>
       <div class="peer peer-gt" role="listitem">
         <div class="peer-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
         <h3>Georgia Tech</h3>
@@ -672,7 +697,7 @@ a{color:inherit}
             <path class="ln ln-took" pathLength="1" fill="none" d="M12 122 C 150 110, 300 92, 408 70"/>
             <path class="ln ln-neg" pathLength="1" fill="none" d="M12 112 C 150 90, 300 54, 408 20"/>
             <circle class="dot-end" cx="408" cy="70" r="5" fill="#8A94A0"/>
-            <circle class="dot-end" cx="408" cy="20" r="6" fill="#EAAA00" stroke="#00203A" stroke-width="2"/>
+            <circle class="dot-end" cx="408" cy="20" r="6" fill="#54D99A" stroke="#00203A" stroke-width="2"/>
           </svg>
           <p class="exp-cap">One conversation at 22 changes the whole curve — for 40 years.</p>
         </div>
